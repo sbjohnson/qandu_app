@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 {% for question in object_list %}
-<div class="panel"> 
+<div class="panel">
     <h3><a href="{{ question.get_absolute_url }}">{{ question.title }}</a></h3>
     <p>Asked by <a href="{% url 'user_detail' slug=question.user.username %}">{{ question.user.username }}</a> on {{ question.created_at }}</p>
     <p>{{ question.vote_set.all.count }} Vote{{ question.vote_set.all.count|pluralize }}</p>
@@ -10,7 +10,9 @@
         <input type="hidden" name="question" value="{{ question.id }}" />
         <input type="hidden" name="user" value="{{ user.id}}" />
         <button>+</button>
-    </form>    
+    </form>
 </div>
+{% empty %}
+<p>No results found.</p>
 {% endfor %}
 {% endblock %}
