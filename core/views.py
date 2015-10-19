@@ -57,6 +57,7 @@ class QuestionDeleteView(DeleteView):
         if object.user != self.request.user:
             raise PermissionDenied()
         return object
+    
 class AnswerCreateView(CreateView):
     model = Answer
     template_name = 'answer/answer_form.html'
@@ -101,10 +102,10 @@ class AnswerDeleteView(DeleteView):
         if object.user != self.request.user:
             raise PermissionDenied()
         return object
-    
+
 class VoteFormView(FormView):
     form_class = VoteForm
-    
+
     def form_valid(self, form):
         user = self.request.user
         question = Question.objects.get(pk=form.data["question"])
@@ -124,4 +125,10 @@ class VoteFormView(FormView):
                 Vote.objects.create(user=user, question=question)
             else:
                 prev_votes[0].delete()
-        return redirect('question_list')    
+        return redirect('question_list')
+
+class UserDetailView(DetailView):
+    model = User
+    slug_field = 'username'
+    template_name = 'user/user_detail.html'
+    context_object_name = 'user_in_view'
